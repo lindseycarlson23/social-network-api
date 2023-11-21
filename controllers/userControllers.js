@@ -90,29 +90,7 @@ module.exports = {
         }
       },
 
-// add a thought to a user
-    async createThought(req,res) {
-        console.log('You are adding a thought');
-        console.log(req.body);
 
-        try {
-            const thought = await User.findOneAndUpdate(
-                { _id: req.params.userId },
-                { $addToSet: { thoughts: req.body }},
-                { runValidators: true, new: true}
-            );
-
-        if (!thought) {
-            return res
-                .status(404)
-                .json({ message: 'No thought found with that ID :('});
-        }
-
-            res.json(thought);
-        }   catch (err) {
-            res.status(500).json(err);
-        }
-    },
 
 // add friend
     async addFriend(req, res) {

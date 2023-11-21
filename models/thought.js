@@ -1,30 +1,32 @@
-const { Schema, model, Types } = require('mongoose');
+const { Schema, model } = require('mongoose');
+
+
 const dayjs = require('dayjs');
 
 const reactionSchema = new Schema(
-    {
-        reactionId: {
-            type: Schema.Types.ObjectId,
-            default: () => new Types.ObjectId(),
+  {
+      reactionId: {
+          type: Schema.Types.ObjectId,
+          default: () => new Types.ObjectId(),
+      },
+      reactionBody: {
+          type: String,
+          required: true,
+          maxlength: 280,
+      },
+      username: {
+          type: String,
+          required: true,
+      },
+      createdAt: {
+          type: Date,
+          default: Date.now,
+          get: function(date) {
+              return dayjs(date).format("MM/DD/YYYY")
+          }
         },
-        reactionBody: {
-            type: String,
-            required: true,
-            maxlength: 280,
-        },
-        username: {
-            type: String,
-            required: true,
-        },
-        createdAt: {
-            type: Date,
-            default: Date.now,
-            get: function(date) {
-                return dayjs(date).format("MM/DD/YYYY")
-            }
-          },
-    }
-)
+  }
+);
 
 const thoughtSchema = new Schema(
   {
@@ -45,6 +47,11 @@ const thoughtSchema = new Schema(
       type: String,
       required: true,
     },
+    // userId: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: 'User',
+    //   required: true,
+  // },
     reactions: [reactionSchema]
   },
   {
@@ -55,6 +62,8 @@ const thoughtSchema = new Schema(
   }
 );
 
-const Thought = model('thought', thoughtSchema);
+const Thought = model('Thought', thoughtSchema);
 
 module.exports = Thought;
+
+// module.exports = thoughtSchema;
