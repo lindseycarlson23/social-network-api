@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongoose').Types;
-const { User } = require('../models');
+const { Thought, User } = require('../models');
 
 
 // Aggregate function to get the total number of friends
@@ -91,27 +91,76 @@ module.exports = {
       },
 
 // add a thought to a user
-    async addThought(req,res) {
+    async createThought(req,res) {
         console.log('You are adding a thought');
         console.log(req.body);
 
         try {
-            const user = await User.findOneAndUpdate(
+            const thought = await User.findOneAndUpdate(
                 { _id: req.params.userId },
                 { $addToSet: { thoughts: req.body }},
                 { runValidators: true, new: true}
             );
 
-        if (!user) {
+        if (!thought) {
+            return res
+                .status(404)
+                .json({ message: 'No thought found with that ID :('});
+        }
+
+            res.json(thought);
+        }   catch (err) {
+            res.status(500).json(err);
+        }
+    },
+
+// add friend
+    async addFriend(req, res) {
+        console.log('You are adding a friend');
+        console.log(req.body);
+
+        try {
+            const friend = await User.findOneAndUpdate(
+                { _id: req.params.userId },
+                { $addToSet: { friends: req.params.friendId }},
+                { runValidators: true, new: true }
+            );
+        
+        if (!friend) {
             return res
                 .status(404)
                 .json({ message: 'No user found with that ID :('});
         }
 
-            res.json(user);
+        res.json(friend);
         }   catch (err) {
             res.status(500).json(err);
         }
     },
+
+    // delete friend
+    async deleteFriend(req, res) {
+        console.log('You are deleting a friend');
+        console.log(req.body);
+
+        try {
+            const friend = await User.findOneAndUpdate(
+                { _id: req.params.userId },
+                { $pull: { friends: req.params.friendId }},
+                { runValidators: true, new: true }
+            );
+        
+        if (!friend) {
+            return res
+                .status(404)
+                .json({ message: 'No user found with that ID :('});
+        }
+
+        res.json(friend);
+        }   catch (err) {
+            res.status(500).json(err);
+        }
+    }
+
 
 }
