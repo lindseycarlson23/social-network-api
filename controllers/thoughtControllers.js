@@ -1,13 +1,6 @@
 const { ObjectId } = require('mongoose').Types;
 const { Thought, User } = require('../models');
 
-
-// const thoughtCount = async () => {
-//     const numberOfThoughts = await Thought.aggregate()
-//         .count('thoughtCount');
-//     return numberOfThoughts;
-// }
-
 module.exports = {
     // Get all thoughts
     async getThoughts(req, res) {
@@ -17,12 +10,6 @@ module.exports = {
                 .then((thoughtData) => {
                     res.json(thoughtData);
                 })
-
-            // const thoughtObj = {
-            //     thoughts,
-            //     // thoughtCount: await thoughtCount(),
-            // };
-
             
         }   catch (err) {
             console.log(err);
@@ -67,73 +54,12 @@ async updateThought(req, res) {
     }
   },
 
-
-    // Create a new thought
-    // async createThought(req, res) {
-    //     try {
-    //         const thought = await Thought.create(req.body);
-    //         res.json(thought);
-    //     }   catch (err) {
-    //         console.log(err);
-    //         return res.status(500).json(err);
-    //     }
-    // },
-
-// async createThought(req, res) {
-//     console.log('You are adding a thought.');
-//     console.log(req.body);
-
-//     try {
-//         const user = await User.findOneAndUpdate(
-//             { _id: req.params.userId },
-//             { $addToSet: { thoughts: req.body } },
-//             { runValidators: true, new: true }
-//         );
-
-//         if (!user) {
-//             return res.status(404).json({ message: 'No user found with that ID :(' });
-//         }
-
-//         res.json(user);
-//     }   catch (err) {
-//         res.status(500).json(err);
-//     }
-// },
-
-// add a thought to a user
-// async createThought(req,res) {
-//     console.log('You are adding a thought');
-//     console.log(req.body);
-    
-
-//     try {
-//         const thought = await Thought.create(req.body);
-//         const user = await User.findOneAndUpdate(
-//             {_id: req.body.userId },
-//             { $push: { thoughts: thought }},
-//             { runValidators: true, new: true }
-//         );
-
-//     if (!user) {
-//         return res.status(404).json({ message: 'No user found'});
-//     }
-
-//     res.json(thought);
-//     }   catch (err) {
-//         res.status(500).json(err);
-//         console.log(err);
-//     }
-// },
-
-
 async createThought(req,res) {
-    // console.log('You are adding a thought');
-    // console.log(req.body);
     Thought.create(req.body)
     .then((thoughtData) => {
         return User.findOneAndUpdate(
             { _id: req.body.userId },
-            { $push: { thoughts: thoughtData._id }},
+            { $push: { thoughts: thoughtData }},
             { new: true}
         )
     })
@@ -190,7 +116,6 @@ async createThought(req,res) {
     },
 
     // delete reaction
-
     async deleteReaction(req, res) {
         console.log('You are deleting a reaction');
         console.log(req.body);
