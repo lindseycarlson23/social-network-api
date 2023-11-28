@@ -58,6 +58,7 @@ module.exports = {
         
             if (updatedUser) {
                 console.log('Updated user: ', updatedUser);
+                res.json(updatedUser);
             }   else {
                 console.log('User not found');
             }
@@ -85,6 +86,7 @@ module.exports = {
           if (!user) {
             return res.status(404).json({ message: 'No user with that ID' });
           }
+        res.json({ message: 'User successfully deleted' });
         } catch (err) {
           res.status(500).json(err);
         }

@@ -59,7 +59,7 @@ async createThought(req,res) {
     .then((thoughtData) => {
         return User.findOneAndUpdate(
             { _id: req.body.userId },
-            { $push: { thoughts: thoughtData }},
+            { $push: { thoughts: thoughtData._id }},
             { new: true}
         )
     })
@@ -86,7 +86,7 @@ async createThought(req,res) {
         if (!thought) {
             return res.status(404).json({ message: 'No thought with that ID' });
         }
-        res.json(thought);
+        res.json({ message: 'Thought has been deleted.' });
         } catch (err) {
         res.status(500).json(err);
         }

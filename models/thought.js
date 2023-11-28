@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 
 
 const dayjs = require('dayjs');
@@ -45,7 +45,7 @@ const thoughtSchema = new Schema(
     },
     username: {
       type: String,
-      required: false,
+      required: true,
     },
     reactions: [reactionSchema]
   },
