@@ -118,12 +118,12 @@ async createThought(req,res) {
     // delete reaction
     async deleteReaction(req, res) {
         console.log('You are deleting a reaction');
-        console.log(req.body);
+        // console.log(req.body);
 
         try {
             const reaction = await Thought.findOneAndUpdate(
                 { _id: req.params.thoughtId },
-                { $pull: { reactions: req.params.reactionId }},
+                { $pull: { reactions: {_id: req.params.reactionId} }},
                 { runValidators: true, new: true }
             );
         
@@ -133,7 +133,7 @@ async createThought(req,res) {
                 .json({ message: 'No reaction found with that ID :('});
         }
 
-        res.json(reaction);
+        res.json({ message: 'Reaction has been deleted' });
         }   catch (err) {
             res.status(500).json(err);
         }
