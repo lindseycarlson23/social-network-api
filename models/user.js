@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema, Types, model } = mongoose;
 // const thoughtSchema = require('./Thought');
 
@@ -10,7 +10,6 @@ const userSchema = new Schema(
       unique: true,
       required: true,
       trim: true,
-      lowercase: true
     },
     email: {
       type: String,
@@ -21,21 +20,21 @@ const userSchema = new Schema(
         validator: function (value) {
           return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
         },
-        message: 'Invalid email format',
+        message: "Invalid email format",
       },
     },
     thoughts: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Thought',
-        },
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Thought",
+      },
     ],
 
     friends: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-        },
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
     ],
   },
   {
@@ -46,8 +45,8 @@ const userSchema = new Schema(
   }
 );
 
-userSchema.virtual("friendCount").get(function() {
+userSchema.virtual("friendCount").get(function () {
   return this.friends.length;
 });
 
-module.exports = model('User', userSchema);
+module.exports = model("User", userSchema);
